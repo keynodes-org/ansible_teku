@@ -40,7 +40,7 @@ verifier:
   options:
     verbose: true
   env:
-    PYTEST_ADDOPTS: --color=yes
+    PYTEST_ADDOPTS: --color=yes -s
 lint: |
   set -e
   yamllint .
