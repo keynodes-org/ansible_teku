@@ -7,7 +7,7 @@
 {% elif config.value is number %}
 {{ config.name }}: {{ config.value }}
 {% elif config.value is iterable and config.value is not string %}
-{{ config.name }}=[{% for item in config.value %}"{{ item }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{{ config.name }}: [{% for item in config.value %}"{{ item }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 {% endif %}
 {% endfor %}
 {% endif %}
