@@ -1,0 +1,17 @@
+---
+- name: Teku - import prepare tasks
+  ansible.builtin.import_tasks: prepare.yml
+  tags:
+    - teku-prepare
+    - teku-config
+    - teku-install
+
+- name: Teku - import configure tasks
+  ansible.builtin.import_tasks: configure.yml
+  tags:
+    - teku-config
+
+- name: Teku - import install tasks
+  ansible.builtin.import_tasks: install.yml
+  tags:
+    - teku-install

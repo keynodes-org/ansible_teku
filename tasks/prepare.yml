@@ -1,0 +1,35 @@
+---
+- name: Teku - create group
+  ansible.builtin.group:
+    name: "{{ teku_group }}"
+    state: present
+
+- name: Teku - user configuration
+  ansible.builtin.user:
+    name: "{{ teku_user }}"
+    groups: "{{ teku_group }}"
+    append: true
+    shell: /usr/sbin/nologin
+    create_home: false
+
+- name: Teku - create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ teku_user }}"
+    group: "{{ teku_group }}"
+    mode: "0750"
+  loop:
+    - "{{ teku_dir_base }}"
+    - "{{ teku_dir_lib }}"
+    - "{{ teku_dir_data }}"
+    - "{{ teku_dir_config }}"
+    - "{{ teku_dir_log }}"
+    - "{{ teku_dir_beacon }}"
+    - "{{ teku_dir_validator }}"
+
+- name: Teku - install required apt packages
+  ansible.builtin.apt:
+    name:
+      - openssl
+    update_cache: true
