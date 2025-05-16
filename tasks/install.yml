@@ -1,0 +1,49 @@
+---
+- name: Teku - Install Java (OpenJDK)
+  ansible.builtin.apt:
+    name: "{{ teku_java_apt_package_name }}"
+    state: present
+    install_recommends: false
+  when: teku_java_install
+
+- name: Teku - check teku is installed
+  ansible.builtin.stat:
+    path: "{{ teku_binary_path }}"
+  register: teku_binary
+
+- name: Teku - download archive and extract
+  ansible.builtin.unarchive:
+    src: "{{ teku_binary_download_url }}"
+    dest: "{{ teku_dir_lib }}"
+    owner: "{{ teku_user }}"
+    group: "{{ teku_group }}"
+    remote_src: true
+    creates: "{{ teku_dir_lib }}/teku-{{ teku_version }}/bin/teku"
+  when: (not teku_binary.stat.exists) or (teku_reinstall)
+
+- name: Teku - create symlink from {{ teku_dir_lib }}/teku-{{ teku_version }}/bin/teku to {{ teku_dir_binary }}
+  ansible.builtin.file:
+    src: "{{ teku_dir_lib }}/teku-{{ teku_version }}/bin/teku"
+    dest: "{{ teku_binary_path }}"
+    state: link
+    owner: "{{ teku_user }}"
+    group: "{{ teku_group }}"
+    mode: "0755"
+  when: (not teku_binary.stat.exists) or (teku_reinstall)
+
+- name: Teku - write systemd unit
+  ansible.builtin.template:
+    src: teku.service.j2
+    dest: "{{ teku_systemd_service_path }}"
+    owner: "{{ teku_user }}"
+    group: "{{ teku_group }}"
+    mode: "0644"
+  notify:
+    - Teku - restart
+
+- name: Teku - ensure service started
+  ansible.builtin.systemd:
+    name: "{{ teku_systemd_service_name }}"
+    state: started
+    daemon_reload: true
+    enabled: true

@@ -1,0 +1,6 @@
+---
+# vars file for teku_ansible_role
+# You can define role-specific variables here that are not defaults
+# and are not intended to be overridden by the user in the same way as defaults.
+# For this role, most configuration is handled via defaults/main.yml.
+

@@ -1,0 +1,9 @@
+{{ teku_dir_log }}/*.log {
+    size 100M
+    rotate 7
+    compress
+    missingok
+    notifempty
+    copytruncate
+    dateext
+}

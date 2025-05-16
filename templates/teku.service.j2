@@ -1,0 +1,27 @@
+[Unit]
+Description=Teku Consensus Layer Client
+Documentation=https://docs.teku.consensys.io/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={{ teku_user }}
+Group={{ teku_group }}
+
+# Teku executable
+ExecStart={{ teku_binary_path }} --config-file={{ teku_config_file_path }}
+
+# Restart behavior
+Restart=on-failure
+RestartSec=5
+
+LimitNOFILE=65536
+
+{% for option in teku_systemd_env_options %}
+Environment={{ option }}
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target
+

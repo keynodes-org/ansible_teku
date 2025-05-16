@@ -1,0 +1,17 @@
+---
+logging:
+  level: info
+exclude_files:
+  - collections/
+  - molecule/
+  - files/
+  - venv/
+
+template:
+  name: readme
+  src: local>doctor/
+  include_header: doctor/readme/HEADER.md
+  force_overwrite: false
+role:
+  name: ansible_teku
+

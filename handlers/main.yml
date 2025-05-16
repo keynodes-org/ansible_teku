@@ -1,0 +1,8 @@
+---
+- name: Teku - restart
+  ansible.builtin.systemd:
+    name: "{{ teku_systemd_service_name }}"
+    state: restarted
+    daemon-reload: true
+    enabled: true
+  become: true

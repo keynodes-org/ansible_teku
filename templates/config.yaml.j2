@@ -1,0 +1,13 @@
+{% if teku_beacon_node_config | length > 0 %}
+{% for config in teku_beacon_node_config %}
+{% if config.value is sameas true or config.value is sameas false %}
+{{ config.name }}: {{ config.value | lower }}
+{% elif config.value is string and config.value | length > 0 %}
+{{ config.name }}: "{{ config.value }}"
+{% elif config.value is number %}
+{{ config.name }}: {{ config.value }}
+{% elif config.value is iterable and config.value is not string %}
+{{ config.name }}=[{% for item in config.value %}"{{ item }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{% endif %}
+{% endfor %}
+{% endif %}

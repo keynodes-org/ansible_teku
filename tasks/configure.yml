@@ -1,0 +1,31 @@
+---
+- name: Teku - check if JWT secret exists
+  ansible.builtin.stat:
+    path: "{{ teku_jwt_secret_path }}"
+  register: jwt_secret_file
+
+- name: Teku - generate JWT secret if not exists
+  ansible.builtin.command: "openssl rand -hex -out {{ teku_jwt_secret_path }} 32"
+  args:
+    creates: "{{ teku_jwt_secret_path }}"
+  when: not jwt_secret_file.stat.exists
+  become: true
+
+- name: Teku - copy configuration file
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "{{ teku_config_file_path }}"
+    owner: "{{ teku_user }}"
+    group: "{{ teku_group }}"
+    mode: "0640"
+  notify:
+    - Teku - restart
+
+- name: Teku - create logrotate config for Teku
+  ansible.builtin.template:
+    src: logrotate.conf.j2
+    dest: "/etc/logrotate.d/teku"
+    owner: "{{ teku_user }}"
+    group: "{{ teku_group }}"
+    mode: "0640"
+

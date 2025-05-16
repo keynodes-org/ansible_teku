@@ -1,0 +1,152 @@
+---
+
+# @var teku_version:description: >
+# Version of Teku to install.
+teku_version: "25.4.1"
+
+# @var teku_download_url:description: >
+# Full URL to download the Teku binary.
+# Default is constructed from teku_version and teku_download_url_base.
+teku_binary_download_url: "https://artifacts.consensys.net/public/teku/raw/names/teku.tar.gz/versions/{{ teku_version }}/teku-{{ teku_version }}.tar.gz"
+
+# @var teku_user:description: >
+# Username for the Teku service.
+teku_user: "teku"
+
+# @var teku_group:description: >
+# Group for the Teku service.
+teku_group: "teku"
+
+# @var teku_dir_base:description: >
+# Base directory for Teku installation and data.
+teku_dir_base: "/opt/teku"
+
+# @var teku_dir_install:description: >
+# Directory where Teku tarball is downloaded and extracted.
+teku_dir_lib: "{{ teku_dir_base }}/lib"
+
+# @var teku_dir_data:description: >
+# Directory for Teku data storage.
+teku_dir_data: "{{ teku_dir_base }}/data"
+
+# @var teku_dir_config:description: >
+# Directory for Teku configuration files.
+teku_dir_config: "{{ teku_dir_base }}/config"
+
+# @var teku_dir_log:description: >
+# Directory for Teku log files.
+teku_dir_log: "{{ teku_dir_base }}/logs"
+
+# @var teku_dir_binary: description: >
+# Directory to install Teku binary 
+teku_dir_binary: "/usr/local/bin"
+
+# @var teku_dir_validator:description: >
+# Directory for Teku validator data .
+teku_dir_validator: "{{ teku_dir_data }}/validator"
+
+# @var teku_dir_beacon:description: >
+# Directory for Teku beacon data.
+teku_dir_beacon: "{{ teku_dir_data }}/beacon"
+
+# @var teku_binary_path:description: >
+# Path where the Teku binary exists.
+teku_binary_path: "{{ teku_dir_binary }}/teku"
+
+# @var teku_config_file_path:description: >
+# Path to the Teku YAML configuration file used by the service.
+teku_config_file_path: "{{ teku_dir_config }}/config.yaml"
+
+# @var teku_systemd_service_name:description: >
+# Name of the Teku systemd service.
+teku_systemd_service_name: "teku"
+
+# @var teku_systemd_service_path:description: >
+# Path for the Teku systemd service file.
+teku_systemd_service_path: "/etc/systemd/system/{{ teku_systemd_service_name }}.service"
+
+# @var teku_reinstall:description: >
+# Flag for Teku reinstall.
+teku_reinstall: false
+
+# @var teku_install_java:description: >
+# Whether to install Java (OpenJDK).
+teku_java_install: true
+
+# @var teku_java_apt_package_name:description: >
+# Name of the Java package to install.
+teku_java_apt_package_name: "openjdk-21-jre-headless"
+
+# @var teku_jwt_secret_path:description: >
+# JWT file path.
+teku_jwt_secret_path: "{{ teku_dir_config }}/jwt.hex"
+
+# @var teku_network:description: >
+# Teku network name(mainnet, sepolia, hoodi etc).
+teku_network: sepolia
+
+# @var teku_checkpoint_sync_url:description: >
+# Teku snap sync url.
+teku_checkpoint_sync_url: "https://sepolia.beaconstate.info"
+
+# @var teku_ee_endpoint:description: >
+# Teku execution layer client url.
+teku_ee_endpoint: https://ethereum-sepolia-rpc.publicnode.com
+
+# @var teku_log_level:description: >
+# Teku log level - OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL
+teku_log_level: DEBUG
+
+# @var teku_java_memory_size:description: >
+# Teku RAM usage limit, default 6 gigabyte(6g).
+teku_java_memory_size: 6g
+
+# @var data_storage_mode:description: >
+# Sets the strategy for handling historical chain: ARCHIVE, PRUNE, MINIMAL, NOT_SET
+data_storage_mode: PRUNE
+
+# @var teku_systemd_env_options:description: >
+# Teku systemd environment options.
+teku_systemd_env_options:
+  - JAVA_OPTS=-Xmx{{ teku_java_memory_size }}
+
+# @var teku_metrics_enabled:description: >
+# Enable prometheus metrics.
+teku_metrics_enabled: true
+
+# @var teku_rest_api_port:description: >
+# Resti api port.
+teku_rest_api_port: 8551
+
+
+### Teku Configuration Options ###
+# @var teku_beacon_node_config:description: >
+# Teku config file options
+# Each key name is the corresponding command line option name without the leading dashes (--).
+teku_beacon_node_config:
+  - name: data-path
+    value: "{{ teku_dir_data }}"
+  - name: data-beacon-path
+    value: "{{ teku_dir_beacon }}"
+  - name: data-validator-path
+    value: "{{ teku_dir_validator }}"
+  - name: data-storage-mode
+    value: "{{ data_storage_mode }}"
+  - name: checkpoint-sync-url
+    value: "{{ teku_checkpoint_sync_url }}"
+  - name: network 
+    value: "{{ teku_network }}"
+  - name: log-file
+    value: "{{ teku_dir_log }}/teku.log"
+  - name: log-destination
+    value: FILE
+  - name: logging
+    value: "{{ teku_log_level }}"
+  - name: ee-endpoint
+    value: "{{ teku_ee_endpoint }}"
+  - name: ee-jwt-secret-file
+    value: "{{ teku_jwt_secret_path }}"
+  - name: rest-api-port
+    value: "{{ teku_rest_api_port }}"
+  - name: metrics-enabled
+    value: "{{ teku_metrics_enabled }}"
