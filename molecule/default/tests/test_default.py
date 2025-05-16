@@ -34,11 +34,6 @@ def test_files(host, file):
     assert f.exists
     assert f.is_file
 
-@pytest.mark.parametrize("command", ["systemctl status teku.service", "journalctl -n10000 -u teku.service"])
-def test_service_output(host, command):
-    c = host.run(command)
-    assert False, f"Command: {command}\nOutput:\n{c.stdout}\n\nError Output:\n{c.stderr}"
-
 @pytest.mark.parametrize("service", ["teku"])
 def test_service(host, service):
     s = host.service(service)
@@ -46,7 +41,7 @@ def test_service(host, service):
     assert s.is_enabled
 
 
-@pytest.mark.parametrize("socket", ["tcp://127.0.0.1:8008", "tcp://127.0.0.1:8551"])
+@pytest.mark.parametrize("socket", ["tcp://::ffff:127.0.0.1:8008", "tcp://::ffff:127.0.0.1:8551"])
 def test_socket(host, socket):
     s = host.socket(socket)
     assert s.is_listening
