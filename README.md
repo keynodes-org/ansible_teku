@@ -1,6 +1,7 @@
 # ansible_teku
 
 Ansible role for deploying Teku Ethereum consensus layer node
+Currently, the role supports only beacon node deployment.
 
 ## Auto-generated
 

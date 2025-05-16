@@ -34,6 +34,13 @@ def test_files(host, file):
     assert f.exists
     assert f.is_file
 
+def test_service(host, socket):
+    systemd_output = host.run("systemctl status teku.service")
+    journalctl_output = host.run("journalctl -n100 -fu teku.service")
+    print(f"{systemd_output}")
+    print("==============================================")
+    print(f"{journalctl_output}")
+
 @pytest.mark.parametrize("service", ["teku"])
 def test_service(host, service):
     s = host.service(service)
