@@ -5,3 +5,4 @@ molecule==25.2.0
 docker==7.1.0
 molecule-plugins==23.7.0
 pytest-testinfra==6.5.0
+molecule-hetznercloud==2.4.0

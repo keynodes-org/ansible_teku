@@ -1,23 +1,10 @@
 ---
 driver:
-  name: docker
+  name: molecule_hetznercloud
 platforms:
   - name: teku-ubuntu24
-    image: jrei/systemd-ubuntu:24.04
-    command: /sbin/init
-    cgroupns_mode: host
-    platform: linux/amd64
-    capabilities:
-      - SYS_ADMIN
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
-    privileged: true
-    environment:
-      ANSIBLE_USER: root
-    tmpfs:
-      - /run
-      - /tmp
-      - /run/lock
+    server_type: cx22 # 2cpu/4ram intel shared
+    image: ubuntu-24.04
 scenario:
   test_sequence:
     - syntax
