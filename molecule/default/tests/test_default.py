@@ -41,7 +41,7 @@ def test_service(host, service):
     assert s.is_enabled
 
 
-@pytest.mark.parametrize("socket", ["tcp://127.0.0.1:8008", "tcp://127.0.0.1:8551"])
+@pytest.mark.parametrize("socket", ["tcp://::ffff:127.0.0.1:8008", "tcp://::ffff:127.0.0.1:8551"])
 def test_socket(host, socket):
     s = host.socket(socket)
     assert s.is_listening
