@@ -9,6 +9,8 @@ on:
 jobs:
   molecule-test:
     runs-on: ubuntu-latest
+    env:
+      HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

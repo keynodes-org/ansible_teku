@@ -34,6 +34,11 @@ def test_files(host, file):
     assert f.exists
     assert f.is_file
 
+@pytest.mark.parametrize("command", ["systemctl status teku.service", "journalctl -n10000 -u teku.service"])
+def test_service_output(host, command):
+    c = host.run(command)
+    assert False, f"Command: {command}\nOutput:\n{c.stdout}\n\nError Output:\n{c.stderr}"
+
 @pytest.mark.parametrize("service", ["teku"])
 def test_service(host, service):
     s = host.service(service)
